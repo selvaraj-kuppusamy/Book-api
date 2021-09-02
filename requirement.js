@@ -27,7 +27,7 @@ Books
     -to get all books //done
     -to get specific books//done
     -to get a list of based on category //done
-    -to get a list of books based on author
+    -to get a list of books based on author//task
 - POST
     -to add new book
 - PUT
@@ -42,7 +42,7 @@ Books
 Authors
 
 - GET
-    -to get all authors
+    -to get all authors //done
     -to get specific author
     -to get list of author based on a book
 

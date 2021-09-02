@@ -20,7 +20,7 @@ OurApp.get("/", (request, response) =>
 //Method - GET
 //Params - BookID
 //Body  -none
-OurApp.get("/book", (req,res) => {
+OurApp.get("/book", (req, res) => {
    return res.json({
         books: Database.Book       
     });
@@ -32,7 +32,7 @@ OurApp.get("/book", (req,res) => {
 //Method - GET
 //Params - BookID
 //Body  -none
- OurApp.get("/book/:bookID", (req,res) =>
+ OurApp.get("/book/s/:bookID", (req,res) =>
 {
     const getBook = Database.Book.filter(
         (book)=>book.ISBN === req.params.bookID
@@ -54,6 +54,20 @@ OurApp.get("/book/c/:category",(req, res)=>{
     return res.json({book: getBook });
 
 });
+
+
+//Route -/authory
+//Des  - To getall author
+//Access - Public
+//Method - GET
+//Params - none
+//Body  -none
+
+OurApp.get("/author", (req, res) => {
+    return res.json({
+         author: Database.Author     
+     });
+ });
 
 OurApp.listen(5000, () => console.log("server is running"));
 
