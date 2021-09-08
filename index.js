@@ -4,8 +4,12 @@ const express  = require("express");
 //database
 const Database = require("./database")
 
+
+
 //Initialization
 const OurApp = express()
+
+OurApp.use(express.json());
 
 OurApp.get("/", (request, response) =>
 {
@@ -56,7 +60,7 @@ OurApp.get("/book/c/:category",(req, res)=>{
 });
 
 
-//Route -/authory
+//Route -/author
 //Des  - To getall author
 //Access - Public
 //Method - GET
@@ -69,5 +73,36 @@ OurApp.get("/author", (req, res) => {
      });
  });
 
-OurApp.listen(5000, () => console.log("server is running"));
+
+//Route         /book/new
+//Desceiption   add new book
+//Access        Public 
+//parameters    none
+//method        POST
+OurApp.post("/book/new", (req,res) => {
+    console.log(req.body);
+   return res.json({message: "Book Added Succesfully"});
+});
+
+//Route         /author/new
+//Desceiption   add new author
+//Access        Public 
+//parameters    none
+//method        POST
+
+OurApp.post("/author/new", (req ,res) => {
+    const { newAuthor } = req.body;
+    console.log(newAuthor);
+    return res.json({ message: "author was added" });
+});
+
+
+OurApp.post('/publication/new', (req,res) => {
+    const publication = req.body;
+    console.log(publication);
+    return res.json({message: "publication added"})
+
+});
+
+OurApp.listen(3000, () => console.log("server is running"));
 
