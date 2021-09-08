@@ -80,7 +80,9 @@ OurApp.get("/author", (req, res) => {
 //parameters    none
 //method        POST
 OurApp.post("/book/new", (req,res) => {
-    console.log(req.body);
+    const { newBook} = req.body;
+   
+    Database.Book.push(newBook);
    return res.json({message: "Book Added Succesfully"});
 });
 
@@ -92,17 +94,103 @@ OurApp.post("/book/new", (req,res) => {
 
 OurApp.post("/author/new", (req ,res) => {
     const { newAuthor } = req.body;
-    console.log(newAuthor);
+    Database.Book.push(newAuthor);
     return res.json({ message: "author was added" });
 });
 
 
+//TODO: Student task
 OurApp.post('/publication/new', (req,res) => {
     const publication = req.body;
     console.log(publication);
     return res.json({message: "publication added"})
 
 });
+
+
+//Route         /book/update
+//Desceiption   update any details of the book
+//Access        Public 
+//parameters    ISBN
+//method        PUT
+
+OurApp.put("/book/update/:isbn", (req,res) =>
+{
+    const { updatedBook } = req.body;
+    const { isbn } = req.params;
+
+ const book =  Database.Book.map((book) => {
+        if(book.ISBN === isbn) {
+            return{ ...book, ...updatedBook };
+        }
+        return book;
+    });
+    return res.json(book);
+});
+
+//Route         /bookAuthor/update/:isbn
+//Desceiption   add new author to a book
+//Access        Public 
+//parameters    ISBN
+//method        PUT
+
+
+
+OurApp.put("/bookAuthor/update/:isbn", (req,res) =>
+{
+    const { newAuthor } = req.body;
+    const { isbn } = req.params;
+    const book = Database.Book.map((book) => 
+    {
+        if(book.ISBN === isbn) {
+        if(!book.authors.includes(newAuthor))
+        {
+        return book.authors.push(newAuthor)
+        }
+        return newAuthor;
+    }
+
+    return book;
+    });
+
+
+
+    const author = Database.Book.map((author) => {
+        if(author.id===newAuthor)
+        {
+            if(!author.id===newAuthor){
+                return book.authors.push(isbn);
+            }
+            return author;
+        }
+return author;
+
+    });
+    return res.json({book: book, author: author});
+})
+
+//TODO: Student Task
+//Route         /author/update
+//Desceiption    update any details of the author
+//Access        Public 
+//parameters    ISBN
+//method        PUT
+
+OurApp.put('/author/update/:id', (req,res) => {
+const { updateAuthor}   = req.body;
+const {id} = req.params;
+
+ const author = Database.Author.map((author) => {
+    if(author.id === parseInt(id))
+    {
+        return { ...author, ...updateAuthor };
+    }
+    return author;
+});
+    return res.json(author);
+});
+
+
 
 OurApp.listen(3000, () => console.log("server is running"));
 
