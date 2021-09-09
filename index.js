@@ -173,7 +173,7 @@ return author;
 //Route         /author/update
 //Desceiption    update any details of the author
 //Access        Public 
-//parameters    ISBN
+//parameters    req.body is always a string format
 //method        PUT
 
 OurApp.put('/author/update/:id', (req,res) => {
@@ -191,6 +191,59 @@ const {id} = req.params;
 });
 
 
+//Route         /book/delete/:isbn
+//Desceiption   delete a book
+//Access        Public 
+//parameters    isbn
+//method        DELETE
+OurApp.delete("/book/delete/:isbn", (req ,res) => {
+    const { isbn } = req.params;
+    const filteredBooks = Database.Book.filter((book) =>
+        book.ISBN !== isbn
+    );
+    Database.Book = filteredBooks
+    return res.json(Database.Book);
+})
+
+
+//Route         /book/deleter/author
+//Desceiption   delete an author from a book
+//Access        Public 
+//parameters    id,json
+//method        DELETE
+
+
+OurApp.delete('/book/delete/author/:isbn/:id', (req,res) => 
+{
+    const { isbn , id } = req.params;
+    //updating book database object
+    Database.Book.forEach((book) => 
+    {
+        if(book.ISBN === isbn)
+        {
+            if(!book.authors.includes(parseInt(id)))
+            {
+                return book;
+            }
+            book.authors = book.authors.filter((databaseid) => databaseid !== parseInt(id));
+            return book;
+        }
+        return book;
+    });
+    Database.Author.forEach((author) => {
+        if(author.id ===parseInt(id))
+        {
+            if(!author.books.includes(isbn))
+            {
+                return;
+            }
+            author.books = author.books.filter((book)=> book!==isbn);
+            return author;
+        }
+        return author;
+    });
+    return res.json({book: Database.Book, author: Database.Author});
+});
 
 OurApp.listen(3000, () => console.log("server is running"));
 
